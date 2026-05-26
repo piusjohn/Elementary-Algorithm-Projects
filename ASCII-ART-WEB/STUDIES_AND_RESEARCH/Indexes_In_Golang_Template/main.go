@@ -22,4 +22,4 @@ func main() {
 
 func indexHandler(w http.ResponseWriter, r *http.Request){
 	tpl.ExecuteTemplate(w, "index.html", g)
-}
+} 
