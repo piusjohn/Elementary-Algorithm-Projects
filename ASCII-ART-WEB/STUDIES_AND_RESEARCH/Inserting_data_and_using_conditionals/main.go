@@ -2,6 +2,7 @@ package main
 
 import (
 	"html/template"
+	"net/http"
 )
 
 var tpl *template.Template
@@ -13,7 +14,13 @@ type User struct{
 }
 var U User
 func main() {
-	u = User{Name: "peter", language: "English", member: false}
-	tpl, _ = tpl.ParseGlob("templates/*.html")
-	
+	U = User{Name: "peter", language: "English", member: false}
+	tpl, _ = tpl.ParseGlob("templates/*.html") 
+	http.HandleFunc("/welcome", welcome)
+	http.ListenAndServe(":4001", nil)
+
+}
+
+func welcome(w http.ResponseWriter, r *http.Request){
+	tpl.ExecuteTemplate(w, "welcome", U)
 }
