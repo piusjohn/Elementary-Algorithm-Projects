@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+      passed in value: {{.}}<br><br>
+        eq .Language "English": {{eq .Language "English"}}<br>
+        eq .Language "Mandarin": {{eq .Language "Mandarin"}}<br>
+        eq .Language "Spanish": {{eq .Language "Spanish"}}<br><br>
+
+   {{/* binary comparison operators defined as functions */}}
+        {{/*
+            eq	Returns the boolean truth of arg1 == arg2
+            ne	Returns the boolean truth of arg1 != arg2
+            lt  Returns the boolean truth of arg1 < arg2
+            le	Returns the boolean truth of arg1 <= arg2
+            gt	Returns the boolean truth of arg1 > arg2
+            ge	Returns the boolean truth of arg1 >= arg2
+   */}}
+
+      {{if eq .Language "English"}}
+          <h1>Hello</h1>
+      {{else if eq .Language "Madarin"}}
+          <h1>你好</h1>
+      {{else if eq .Language "Spanish"}}
+          <h1>Hola</h1>
+      {{else}}
+          <hi>
+            <ul>
+                <li>Hello</li>
+                <li>你好</li>
+                <li>Hola</li>
+            </ul>
+          </hi>
+          {{end}}
+</body>
+</html>

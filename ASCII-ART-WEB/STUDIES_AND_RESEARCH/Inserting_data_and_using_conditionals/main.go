@@ -9,18 +9,18 @@ var tpl *template.Template
 
 type User struct{
 	Name string
-	language string
-	member bool
+	Language string
+	Member bool
 }
 var U User
 func main() {
-	U = User{Name: "peter", language: "English", member: false}
-	tpl, _ = tpl.ParseGlob("templates/*.html") 
+	U = User{Name: "peter", Language: "Madarin", Member: true}
+	tpl, _ = template.ParseGlob("templates/*.html") 
 	http.HandleFunc("/welcome", welcome)
 	http.ListenAndServe(":4001", nil)
 
 }
 
 func welcome(w http.ResponseWriter, r *http.Request){
-	tpl.ExecuteTemplate(w, "welcome", U)
+	tpl.ExecuteTemplate(w, "index2.html", U)
 }
