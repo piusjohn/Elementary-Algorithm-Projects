@@ -3,14 +3,26 @@ package main
 import (
 	"html/template"
 	"net/http"
+	"log"
 )
+var tpl *template.Template
+func init(){
+	tpl = template.New("index.html")
 
-var tpl, _ = template.New("myTemplate").Funcs(template.FuncMap{
-	"lastItem": func(s []string) string {
-		lastIndex := len(s) - 1
+tpl.Funcs(template.FuncMap{
+	"lastIndex": func (s []string) string{
+		lastIndex := len(s)-1
 		return s[lastIndex]
 	},
-}).ParseFiles("index.html")
+})
+
+_, err := tpl.ParseFiles("index.html")
+
+if err != nil{
+	log.Fatal(err)
+}
+
+}
 
 var g []string 
 
