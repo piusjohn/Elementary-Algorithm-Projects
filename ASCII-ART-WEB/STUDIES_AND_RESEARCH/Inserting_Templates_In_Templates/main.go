@@ -21,7 +21,7 @@ type task struct {
 var tpl *template.Template
 
 func main() {
-	tpl, _ = tpl.ParseGlob("*.html")
+	tpl = template.Must(template.ParseGlob("templates/*.html"))
 	http.HandleFunc("/", indexHandler)
 	http.ListenAndServe(":8080", nil)
 }
