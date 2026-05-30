@@ -1,42 +1,50 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
 )
 
 type PageData struct {
-		Title  string
-		Result string
+	Title  string
+	Result string
 }
-func homeHandler(w http.ResponseWriter, r *http.Request) {
-    if r.URL.Path != "/" {
-        http.Error(w, "Not Found", http.StatusNotFound)
-        return
-    }
-    data := PageData{Title: "ASCII Art Generator"}
 
-    if r.Method == "POST" {
+func homeHandler(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/" {
+		http.Error(w, "Not Found", http.StatusNotFound)
+		return
+	}
+	data := PageData{Title: "ASCII Art Generator"}
+
+	if r.Method == "POST" {
 		banner := r.FormValue("banner")
-		if banner ==""{
+		if banner == "" {
 			http.Error(w, "Wrong Request: Invalid banner selected", http.StatusBadRequest)
 			return
 		}
 		text := r.FormValue("text")
-		if text == ""{
+		if text == "" {
 			http.Error(w, "Bad Request: Empty Input", http.StatusBadRequest)
-			return 
+			return
 		}
-        data.Result = "you typed: " + text + " " + "with banner: " + banner
-    }
+		bannerPath := fmt.Sprintf("banners/%s.txt", banner)
+		bannerMap, err := LoadBanner(bannerPath)
+		if err != nil {
+			http.Error(w, "Banner Not Found", http.StatusNotFound)
+			return
+		}
+		data.Result = GenerateArt(text, bannerMap)
+	}
 
-    tmpl, err := template.ParseFiles("templates/index.html")
-    if err != nil {
-        http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-        return
-    }
-    tmpl.Execute(w, data)
+	tmpl, err := template.ParseFiles("templates/index.html")
+	if err != nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+	tmpl.Execute(w, data)
 }
 
 func main() {
