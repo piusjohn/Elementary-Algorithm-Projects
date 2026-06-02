@@ -1,14 +1,89 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+    <title>{{.Title}}</title>
+    <style>
+        /* Optional basic layout styling */
+        body { font-family: sans-serif; margin: 40px; }
+        .input-group { display: flex; gap: 10px; margin-bottom: 15px; }
+        input[type="text"] { width: 300px; padding: 8px; }
+        button.mic-btn { padding: 8px 12px; cursor: pointer; font-size: 16px; }
+        button.mic-btn.listening { background-color: #ff4d4d; color: white; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+    </style>
+</head>
 <body>
     <h1>{{ .Title }}</h1>
+    
     <form action="/" method="POST">
-        <input type="text" name="text" placeholder="Enter text">
-        <input type="radio" name="banner" value="standard"> standard
+        <div class="input-group">
+            <!-- Added id="textInput" so JavaScript can fill the voice transcription inside it -->
+            <input type="text" id="textInput" name="text" placeholder="Enter text or click Mic to speak..." 
+                   hx-post="/" 
+                   hx-trigger="keyup changed delay:0ms, voiceInput" 
+                   hx-target="#outputblock">
+            
+            <!-- 🎙️ The Voice Activation Button -->
+            <button type="button" id="micBtn" class="mic-btn">🎙️ Speak</button>
+        </div>
+
+        <input type="radio" name="banner" value="standard" checked> standard
         <input type="radio" name="banner" value="shadow"> shadow
         <input type="radio" name="banner" value="thinkertoy"> thinkertoy
         <button type="submit">Generate</button>
     </form>
-    <pre>{{ .Result }}</pre>
+    
+    <pre id="outputblock">{{ if .Result }}{{ .Result }}{{ end }}</pre>
+
+    <script>
+        const micBtn = document.getElementById('micBtn');
+        const textInput = document.getElementById('textInput');
+
+        // Check if the user's browser supports native voice recognition
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+        if (!SpeechRecognition) {
+            micBtn.disabled = true;
+            micBtn.innerText = "❌ Mic Not Supported";
+        } else {
+            const recognition = new SpeechRecognition();
+            recognition.continuous = false; // Stop listening automatically once you stop speaking
+            recognition.interimResults = false; // Wait until you are fully done speaking to send text
+            recognition.lang = 'en-US'; // Set processing language
+
+            // 1. When the user clicks the microphone button
+            micBtn.addEventListener('click', () => {
+                recognition.start();
+            });
+
+            // Visual indicator when the microphone is recording
+            recognition.onstart = () => {
+                micBtn.classList.add('listening');
+                micBtn.innerText = "🛑 Listening...";
+            };
+
+            recognition.onend = () => {
+                micBtn.classList.remove('listening');
+                micBtn.innerText = "🎙️ Speak";
+            };
+
+            // 2. Capture the speech result and type it into the text field
+            recognition.onresult = (event) => {
+                const spokenText = event.results[0][0].transcript;
+                textInput.value = spokenText; // Injects your voice into the input field
+
+                // 3. Manually fire a custom HTMX trigger event so Go processes it immediately
+                htmx.trigger(textInput, 'voiceInput');
+            };
+
+            recognition.onerror = (err) => {
+                console.error("Speech recognition error: ", err);
+                micBtn.classList.remove('listening');
+                micBtn.innerText = "🎙️ Speak";
+            };
+        }
+    </script>
 </body>
 </html>

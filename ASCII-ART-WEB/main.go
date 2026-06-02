@@ -6,48 +6,48 @@ import (
 	"log"
 	"net/http"
 )
-
-type PageData struct {
-	Title  string
+type PageData struct{
+	Title string
 	Result string
 }
-
-func homeHandler(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/" {
-		http.Error(w, "Not Found", http.StatusNotFound)
+var tpl = template.Must(template.ParseFiles("templates/index.html"))
+func HomeHandler(w http.ResponseWriter, req *http.Request){
+	if req.URL.Path != "/"{
+		http.Error(w, "route not found", http.StatusNotFound)
 		return
 	}
-	data := PageData{Title: "ASCII Art Generator"}
-
-	if r.Method == "POST" {
-		banner := r.FormValue("banner")
-		if banner == "" {
-			http.Error(w, "Wrong Request: Invalid banner selected", http.StatusBadRequest)
-			return
-		}
-		text := r.FormValue("text")
-		if text == "" {
-			http.Error(w, "Bad Request: Empty Input", http.StatusBadRequest)
-			return
-		}
-		bannerPath := fmt.Sprintf("banners/%s.txt", banner)
-		bannerMap, err := LoadBanner(bannerPath)
-		if err != nil {
-			http.Error(w, "Banner Not Found", http.StatusNotFound)
-			return
-		}
-		data.Result = GenerateArt(text, bannerMap)
+	data := PageData{Title: "ASCII ART GENERATOR"}
+	if req.Method == http.MethodGet{
+		if err := tpl.ExecuteTemplate(w, "index.html", data); err != nil{
+		http.Error(w, "Sever error", http.StatusInternalServerError)
+		return
 	}
+	return
+}
+	if req.Method == http.MethodPost{
+	text := req.FormValue("text")
+	banner := req.FormValue("banner")
 
-	tmpl, err := template.ParseFiles("templates/index.html")
+	bannerPath := fmt.Sprintf("banners/%s.txt", banner)
+	bannerMap, err := LoadBanner(bannerPath)
 	if err != nil {
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		http.Error(w, "Banner does not exist", http.StatusInternalServerError)
 		return
 	}
-	tmpl.Execute(w, data)
+	data.Result = GenerateArt(text, bannerMap)
+	 w.Write([]byte(data.Result))
+	// if err := tpl.ExecuteTemplate(w, "index.html", data); err != nil{
+	// 	http.Error(w, "Sever error", http.StatusInternalServerError)
+	// 	return
+	// }
+	return
+}
+	http.Error(w, "Method not available", http.StatusMethodNotAllowed)
+
 }
 
-func main() {
-	http.HandleFunc("/", homeHandler)
-	log.Fatal(http.ListenAndServe(":8000", nil))
+func main(){
+	http.HandleFunc("/", HomeHandler)
+	err := http.ListenAndServe(":5000", nil)
+	log.Fatal(err)
 }
