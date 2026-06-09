@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="/templates/styles.css">
+    <link rel="stylesheet" href="/static/styles.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{.Title}}</title>
@@ -9,9 +9,9 @@
 </head>
 <body>
     <h1 class="header">{{.Title}}</h1>
-    <p>Turn images and text into shareable ASCII art.</p>
+    <p style="color: antiquewhite;">Turn images and text into shareable ASCII art.</p>
     <form action="ascii-art" method="POST">
-    <input type="text" name="text" placeholder="Enter Your Text Here">
+    <textarea name="text" id="inputtext" placeholder="enter your text here..."></textarea>
     <input type="radio" name="banner" value="standard.txt" checked> standard
     <input type="radio" name="banner" value="shadow.txt"> shadow
     <input type="radio" name="banner" value="thinkertoy.txt"> thinkertoy

@@ -10,3 +10,6 @@ body {
 .header{
    color: antiquewhite; 
 }
+.header{
+    text-align: center;
+}
