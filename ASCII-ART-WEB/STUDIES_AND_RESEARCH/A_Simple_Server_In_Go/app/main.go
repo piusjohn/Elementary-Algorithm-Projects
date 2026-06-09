@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func main(){
+func main() {
 	fileserver := http.FileServer(http.Dir("../static"))
 
 	http.Handle("/", fileserver)
@@ -15,7 +15,7 @@ func main(){
 	http.HandleFunc("/form", handler.FormHandler)
 
 	fmt.Printf("port running on http://localhost:8081/\n")
-	if err := http.ListenAndServe(":8081", nil); err != nil{
+	if err := http.ListenAndServe(":8081", nil); err != nil {
 		log.Fatal(err)
 	}
 }

@@ -1,0 +1,12 @@
+body {
+    background-color: #0D1116;
+}
+#output{
+    background-color: #1e1e1e; /* Dark gray background */
+    color: #ffffff;            /* Crisp white ASCII text */
+    padding: 15px;             /* Spacing inside the box */
+    border-radius: 5px;        /* Rounded corners */
+}
+.header{
+   color: antiquewhite; 
+}

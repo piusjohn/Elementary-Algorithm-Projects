@@ -2,13 +2,13 @@ package main
 
 import (
 	//"fmt"
-	"net/http"
 	"html/template"
+	"net/http"
 )
+
 var tpl *template.Template
 
-
-func home(w http.ResponseWriter, r *http.Request){
+func home(w http.ResponseWriter, r *http.Request) {
 	tpl.Execute(w, nil)
 }
 func main() {

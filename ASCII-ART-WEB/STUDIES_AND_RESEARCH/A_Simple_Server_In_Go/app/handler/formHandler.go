@@ -1,14 +1,13 @@
 package handler
 
 import (
+	"app/app/util"
 	"fmt"
 	"net/http"
 	"strconv"
-	"app/app/util"
 )
 
-
-func FormHandler(w http.ResponseWriter, r *http.Request){
+func FormHandler(w http.ResponseWriter, r *http.Request) {
 	if err := r.ParseForm(); err != nil {
 		fmt.Fprintf(w, "ParseForm() err: %v", err)
 		return
@@ -28,9 +27,9 @@ func FormHandler(w http.ResponseWriter, r *http.Request){
 		return
 	}
 
-	//Convert ticket quantity to int	
+	//Convert ticket quantity to int
 	quantity, err := strconv.Atoi(ticketquantity)
-	if err != nil{
+	if err != nil {
 		fmt.Fprintf(w, "Error converting ticket quantity: %v", err)
 		return
 	}
@@ -40,7 +39,7 @@ func FormHandler(w http.ResponseWriter, r *http.Request){
 	fmt.Fprintf(w, "Event Name = %s\n", eventname)
 	fmt.Fprintf(w, "Your Ticket ID is %s\n", ticketid)
 	fmt.Fprintf(w, "You're off to %s\n", eventlocation)
-    fmt.Fprintf(w, "Ticket Price = %s\n", ticketprice)
-    fmt.Fprintf(w, "Ticket Quantity = %s\n", ticketquantity)
-    fmt.Fprintf(w, "Total Cost = %.2f\n", totalCost)
+	fmt.Fprintf(w, "Ticket Price = %s\n", ticketprice)
+	fmt.Fprintf(w, "Ticket Quantity = %s\n", ticketquantity)
+	fmt.Fprintf(w, "Total Cost = %.2f\n", totalCost)
 }

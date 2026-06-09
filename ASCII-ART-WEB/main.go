@@ -1,53 +1,57 @@
 package main
 
 import (
-	"fmt"
 	"html/template"
-	"log"
 	"net/http"
 )
-type PageData struct{
-	Title string
+
+func main() {
+	http.Handle("/templates/", http.StripPrefix("/templates/", http.FileServer(http.Dir("templates"))))
+	http.HandleFunc("/", HomePage)
+	http.HandleFunc("/ascii-art", Ascii)
+	http.ListenAndServe(":8080", nil)
+}
+
+var tpl = template.Must(template.ParseFiles("templates/index.html"))
+
+type PageData struct {
+	Title  string
 	Result string
 }
-var tpl = template.Must(template.ParseFiles("templates/index.html"))
-func HomeHandler(w http.ResponseWriter, req *http.Request){
-	if req.URL.Path != "/"{
-		http.Error(w, "route not found", http.StatusNotFound)
-		return
-	}
-	data := PageData{Title: "ASCII ART GENERATOR"}
-	if req.Method == http.MethodGet{
-		if err := tpl.ExecuteTemplate(w, "index.html", data); err != nil{
-		http.Error(w, "Sever error", http.StatusInternalServerError)
-		return
-	}
-	return
-}
-	if req.Method == http.MethodPost{
-	text := req.FormValue("text")
-	banner := req.FormValue("banner")
 
-	bannerPath := fmt.Sprintf("banners/%s.txt", banner)
-	bannerMap, err := LoadBanner(bannerPath)
+func HomePage(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/" {
+		http.Error(w, "Path Not Found", http.StatusNotFound)
+		return
+	}
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method Not Available", http.StatusMethodNotAllowed)
+		return
+	}
+	data := PageData{Title: "ASCII-ART-GENERATOR"}
+	tpl.Execute(w, data)
+}
+
+func Ascii(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/ascii-art" {
+		http.Error(w, "Path Not Found", http.StatusNotFound)
+		return
+	}
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method Not Available", http.StatusMethodNotAllowed)
+		return
+	}
+	text := r.FormValue("text")
+	banner := r.FormValue("banner")
+	temp, err := Asciiart(text, banner)
 	if err != nil {
-		http.Error(w, "Banner does not exist", http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	data.Result = GenerateArt(text, bannerMap)
-	 w.Write([]byte(data.Result))
-	// if err := tpl.ExecuteTemplate(w, "index.html", data); err != nil{
-	// 	http.Error(w, "Sever error", http.StatusInternalServerError)
-	// 	return
-	// }
-	return
-}
-	http.Error(w, "Method not available", http.StatusMethodNotAllowed)
+	data := PageData{Title: "ASCII-ART-GENERATOR", Result: temp}
+	if err := tpl.Execute(w, data); err != nil {
+		http.Error(w, "template execution failed", http.StatusInternalServerError)
+		return
+	}
 
-}
-
-func main(){
-	http.HandleFunc("/", HomeHandler)
-	err := http.ListenAndServe(":5000", nil)
-	log.Fatal(err)
 }

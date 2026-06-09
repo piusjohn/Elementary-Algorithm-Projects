@@ -18,12 +18,12 @@ func (p Price) CanCashPr() string {
 		s := fmt.Sprintf("%.2f", pr)
 		return s
 	}
-	pr := (float64(quotiant*5)+5) / 100
+	pr := (float64(quotiant*5) + 5) / 100
 	s := fmt.Sprint("%.2f", pr)
-	return  s
+	return s
 }
 
-var p Price 
+var p Price
 
 func main() {
 	p = 3.91
