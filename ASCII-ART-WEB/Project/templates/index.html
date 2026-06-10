@@ -55,6 +55,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ASCII-ART GENERATOR</title>
+    <script src="https://unpkg.com/htmx.org@2.0.4"></script>
     <link rel="stylesheet" href="static/styles.css">
 </head>
 <body>
@@ -74,7 +75,12 @@
                 </div>
                 <div class="right">
                     <label for="text">Input Text</label>
-                    <textarea name="text" id="textarea" placeholder="enter your text here..." rows="6"></textarea>
+                    <textarea name="text" id="textarea" placeholder="enter your text here..." rows="6"
+                    hx-post="ascii-art"
+                    hx-trigger="keyup changed delay:200ms"
+                    hx-target="#output"
+                    > 
+                    </textarea>
                 </div>
             </div>
             <button type="submit">Generate</button>
@@ -83,7 +89,7 @@
       </div>
         <div class="output-section">
             <h2>OUTPUT</h2> 
-            <pre>{{.Result}}</pre>   
+            <pre id="output">{{.Result}}</pre>   
         </div>
     </div>
     

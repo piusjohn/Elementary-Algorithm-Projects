@@ -49,6 +49,11 @@ func Ascii(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	data := PageData{Title: "Text to ASCII Art Generator: Create ASCII Art from Text", Result: temp}
+	if r.Header.Get("HX-Request") == "true"{
+		w.Header().Set("Content-Type", "text/plain")
+		w.Write([]byte(data.Result))
+		return
+	}
 	if err := tpl.Execute(w, data); err != nil {
 		http.Error(w, "template execution failed", http.StatusInternalServerError)
 		return
