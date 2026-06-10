@@ -48,7 +48,7 @@ func Ascii(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	data := PageData{Title: "ASCII-ART-GENERATOR", Result: temp}
+	data := PageData{Title: "Text to ASCII Art Generator: Create ASCII Art from Text", Result: temp}
 	if err := tpl.Execute(w, data); err != nil {
 		http.Error(w, "template execution failed", http.StatusInternalServerError)
 		return
