@@ -134,7 +134,7 @@ import (
 // }
 
 func Asciiart(text, bannerchoice string) (string, error) {
-	bannerpath := fmt.Sprintf("banners/%s.txt", bannerchoice)
+	bannerpath := fmt.Sprintf("ascii-art/art-styles/%s.txt", bannerchoice)
 	data, err := os.ReadFile(bannerpath)
 	if err != nil {
 		return "", fmt.Errorf("error parsing file")

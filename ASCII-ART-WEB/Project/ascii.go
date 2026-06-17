@@ -153,7 +153,7 @@ func Asciiart(text, bannerchoice string) (string, error) {
 		for i := 1; i <= 8; i++ {
 			for _, r := range word {
 				if r < 32 || r > 126 {
-					return "", fmt.Errorf("unsupported character%d\n", r)
+					return "", fmt.Errorf("unsupported character%c\n", r)
 				}
 				result += splitted[i+(int(r-32)*9)]
 			}

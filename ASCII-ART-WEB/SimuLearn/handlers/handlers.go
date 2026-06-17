@@ -74,7 +74,7 @@ func HandleAsciiArt(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 		return
 	}
-	artStyle := r.FormValue("banner")
+	artStyle := r.FormValue("artstyle")
 	userText := r.FormValue("text")
 	result, err := asciiart.Asciiart(userText, artStyle)
 	if err != nil{
