@@ -70,68 +70,8 @@ import (
 // 		}
 // 	}
 // 	return b.String()
-// }
+// 
 
-// func main() {
-// 	if len(os.Args) < 2 {
-// 		fmt.Println("USAGE: go run . 'userinput' standard.txt")
-// 		return
-// 	}
-// 	userinput := os.Args[1]
-// 	if userinput == "" {
-// 		return
-// 	}
-
-// 	bannername := "standard"
-// 	if len(os.Args) > 2 {
-// 		bannername = os.Args[2]
-// 	}
-// 	bannerpath := fmt.Sprintf("%s.txt", bannername)
-
-// 	_, err := LoadBanner(bannerpath)
-// 	if err != nil {
-// 		fmt.Printf("Error: Banner '%s' not found or invalid.\n", bannername)
-// 		return
-// 	}
-
-// 	data, _ := LoadBanner(bannerpath)
-
-// 	result := GenerateArt(userinput, data)
-// 	fmt.Println(result)
-
-// }
-
-// func Ascii(text, bannerchoice string) (string, error) {
-// 	bannerpath := fmt.Sprintf("banners/%s.txt", bannerchoice)
-// 	data, err := os.ReadFile(bannerpath)
-// 	if err != nil {
-// 		fmt.Println(err)
-// 		return "", errors.New("error parsing banner files")
-// 	}
-// 	cleandata := strings.ReplaceAll(string(data), "\r\n", "\n")
-// 	cleantext := strings.ReplaceAll(text, "\r\n", "\n")
-// 	words := strings.Split(cleantext, "\n")
-// 	splitted := strings.Split(cleandata, "\n")
-// 	var result string
-// 	for _, word := range words {
-// 		if word == "" {
-// 			result += "\n"
-// 			continue
-// 		}
-// 		for i := 1; i <= 8; i++ {
-// 			for _, r := range word {
-// 				if r < 32 || r > 126 {
-// 					return "", fmt.Errorf("Text contains non-Printable character,%c\n", r)
-// 				}
-// 				result += splitted[i+(int(r-32)*9)]
-
-// 			}
-// 			result += "\n"
-// 		}
-// 	}
-
-// 	return result, nil
-// }
 
 func Asciiart(text, bannerchoice string) (string, error) {
 	bannerpath := fmt.Sprintf("banners/%s.txt", bannerchoice)
