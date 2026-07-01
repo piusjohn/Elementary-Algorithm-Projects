@@ -85,6 +85,7 @@ var artists []Artist
 var locations Locations
 var dates  Dates
 var relation Relation
+
 func main() {
 	var err error
 	artists, err = fetch[[]Artist]("https://groupietrackers.herokuapp.com/api/artists")
@@ -118,18 +119,23 @@ func handleHome(w http.ResponseWriter, r *http.Request){
 }
 
 func handleArtist(w http.ResponseWriter, r *http.Request){
+	var pagedata ArtistPageData
 	v := r.PathValue("id")
 	id, err := strconv.Atoi(v)
 	if err != nil{
 		fmt.Println("id conversion failed")
 		return
 	}
-	// for i := 0; i < len(artists); i++
-	for _, a := range artists{
-		if a.ID == id {
-			tpl.ExecuteTemplate(w, "artist.html", a)
-			return
-		}
-	}
-	http.Error(w, "message: Artist not found", http.StatusNotFound)
+    // // for i := 0; i < len(artists); i++
+	// for _, a := range artists{
+	// 	if a.ID == id {
+	// 		tpl.ExecuteTemplate(w, "artist.html", a)
+	// 		return
+	// 	}
+	pagedata.Artist = artists[id-1]
+	pagedata.Location = locations.Index[id-1]
+	pagedata.Date = dates.Index[id-1]
+	pagedata.Relation = relation.Index[id-1]
+	tpl.ExecuteTemplate(w, "artist.html", pagedata)
 }
+	// http.Error(w, "message: Artist not found", http.StatusNotFound)

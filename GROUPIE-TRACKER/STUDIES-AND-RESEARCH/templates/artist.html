@@ -3,14 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title>Artist Page</title>
 </head>
 <body>
-    <img src="{{.Image}}" alt="{{.Name}} Photo">
-    <p>{{.Name}}</p>
-    <p>Members: {{.Members}}</p>
-    <p>Creation Date: {{.CreationDate}}</p>
-    <p>FirstAlbum {{.FirstAlbum}}</p>
-    <p>Locations {{.Locations}}</p>
+    <h2>{{.Artist.Name}} Details</h2>
+    <img src="{{.Artist.Image}}" alt="{{.Artist.Name}} Photo">
+    <p>{{.Artist.Name}}</p>
+    <p>Members: {{.Artist.Members}}</p>
+    <p>Creation Date: {{.Artist.CreationDate}}</p>
+    <p>FirstAlbum: {{.Artist.FirstAlbum}}</p>
+    <p>Locations: {{.Location.Locations}}</p>
+    <p>Event Dates: {{.Date.Dates}}</p>
+    <p>Relation: {{.Relation.Dateslocation}}</p>
 </body>
 </html>
