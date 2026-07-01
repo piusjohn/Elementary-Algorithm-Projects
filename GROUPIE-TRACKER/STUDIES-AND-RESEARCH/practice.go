@@ -44,6 +44,11 @@ type Relation struct {
 	Index  []RelationIndex `json:"index"`
 }
 
+func fetchArtists(url string) ([]Artist, error) {
+   
+}
+
+
 func main() {
 
 }
