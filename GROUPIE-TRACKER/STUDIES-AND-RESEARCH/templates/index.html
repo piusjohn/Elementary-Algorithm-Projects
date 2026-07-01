@@ -3,10 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Document</title>
 </head>
 <body>
-    {{.Image}}
-    {{.Name}}
+
+<div class="dashboard-grid">
+    {{range .}}
+    <a href="/artist/{{.ID}}" class="artist-card">
+        <img src="{{.Image}}" alt="Artist Photo">
+        <p>{{.Name}}</p>
+    </a>
+    {{end}}
+</div>
+
 </body>
 </html>

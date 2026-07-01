@@ -53,6 +53,13 @@ type Relation struct {
 	Index  []RelationIndex `json:"index"`
 }
 
+type ArtistPageData struct {
+	Artist Artist
+	Location LocationIndex
+	Date  DateIndex
+	Relation RelationIndex
+}
+
 func fetch[T any](url string) (T, error) {
 	var zero T
     resp, err := http.Get(url)
@@ -117,6 +124,7 @@ func handleArtist(w http.ResponseWriter, r *http.Request){
 		fmt.Println("id conversion failed")
 		return
 	}
+	// for i := 0; i < len(artists); i++
 	for _, a := range artists{
 		if a.ID == id {
 			tpl.ExecuteTemplate(w, "artist.html", a)
