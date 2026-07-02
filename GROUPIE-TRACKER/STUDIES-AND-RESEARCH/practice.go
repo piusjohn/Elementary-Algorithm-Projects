@@ -77,7 +77,7 @@ func fetch[T any](url string) (T, error) {
 	var data T
 	err = json.Unmarshal(body, &data)
 	if err != nil {
-		log.Fatalf("Failed to unmarshal JSON: %v", err)
+		return zero, fmt.Errorf("failed to unmarshal JSON: %v", err)
 	}
 	return data, nil
 }
@@ -108,9 +108,14 @@ func main() {
 		log.Fatal(err)
 	}
 
+	fs := http.FileServer(http.Dir("static"))
+    http.Handle("/static/", http.StripPrefix("/static/", fs))
+
+
 	http.HandleFunc("/home", handleHome)
 	http.HandleFunc("/artist/{id}", handleArtist)
 	log.Fatal(http.ListenAndServe(":8080", nil))
+
 	
 }
 

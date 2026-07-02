@@ -4,16 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Artist Page</title>
+    <style>
+        body{
+            background-image: url('/static/artist-background.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+        }
+    </style>
 </head>
 <body>
     <h2>{{.Artist.Name}} Details</h2>
     <img src="{{.Artist.Image}}" alt="{{.Artist.Name}} Photo">
     <p>{{.Artist.Name}}</p>
-    <p>Members: {{.Artist.Members}}</p>
+    <p>Members:</p>
+    <ul>
+        {{range .Artist.Members}}
+           <li>{{.}}</li>
+        {{end}}
+    </ul>
     <p>Creation Date: {{.Artist.CreationDate}}</p>
     <p>FirstAlbum: {{.Artist.FirstAlbum}}</p>
-    <p>Locations: {{.Location.Locations}}</p>
-    <p>Event Dates: {{.Date.Dates}}</p>
-    <p>Relation: {{.Relation.Dateslocation}}</p>
+
+    <p>Locations:</p>
+    <ul>
+        {{range.Location.Locations}}
+           <li>{{.}}</li>
+        {{end}}
+    </ul>
+    <p>Event Dates:</p>
+    <ul>
+        {{range .Date.Dates}}
+          <li>{{.}}</li>
+        {{end}}
+    </ul>
+    <p>Dateslocation: </p>
+    <ul>
+        {{range $key, $value := .Relation.Dateslocation}}
+          <li><strong>{{$key}}:</strong> </li>
+           {{range $value}}
+              {{.}}
+          {{end}}
+        {{end}}
+    </ul>
 </body>
 </html>
