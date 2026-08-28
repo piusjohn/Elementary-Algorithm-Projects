@@ -112,7 +112,7 @@ func main() {
     http.Handle("/static/", http.StripPrefix("/static/", fs))
 
 
-	http.HandleFunc("/home", handleHome)
+	http.HandleFunc("/", handleHome)
 	http.HandleFunc("/artist/{id}", handleArtist)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 
